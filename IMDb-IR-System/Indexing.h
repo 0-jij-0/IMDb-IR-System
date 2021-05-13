@@ -51,11 +51,11 @@ void getTFIDFIndex() {
 
 void initializeSearchEngine() {
 	time_t start = clock(); getMoviesName();
-	getBooleanInvertedIndex("NameIndex", nameIndex);
-	getBooleanInvertedIndex("ActorIndex", actorIndex);
-	getBooleanInvertedIndex("CharacterIndex", characterIndex);
-	getBooleanInvertedIndex("YearIndex", yearIndex);
-	getBooleanInvertedIndex("RatingIndex", ratingIndex);
+	getBooleanInvertedIndex("NameIndex.txt", nameIndex);
+	getBooleanInvertedIndex("ActorIndex.txt", actorIndex);
+	getBooleanInvertedIndex("CharacterIndex.txt", characterIndex);
+	getBooleanInvertedIndex("YearIndex.txt", yearIndex);
+	getBooleanInvertedIndex("RatingIndex.txt", ratingIndex);
 	getTFIDFIndex(); time_t finish = clock();
 
 	ld elapsed = 1000.0 * (finish - start) / CLOCKS_PER_SEC;
