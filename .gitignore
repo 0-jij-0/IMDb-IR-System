@@ -1,13 +1,10 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿*.opendb
+*.db-wal
+*.db-shm
+*.db
+*.ipch
+*.json
+*.suo
+*.sqlite
+*.sqlite-journal
 
-/.vs/IMDb-IR-System/v16/.suo
-/.vs/slnx.sqlite-journal
-/.vs/slnx.sqlite
-/.vs/ProjectSettings.json
-/.vs/IMDb-IR-System/v16/ipch/AutoPCH/448c3e35b247b184/INDEXING.ipch
-/.vs/IMDb-IR-System/v16/Browse.VC.opendb
-/.vs/IMDb-IR-System/v16/Browse.VC.db-wal
-/.vs/IMDb-IR-System/v16/Browse.VC.db-shm
-/.vs/IMDb-IR-System/v16/Browse.VC.db
