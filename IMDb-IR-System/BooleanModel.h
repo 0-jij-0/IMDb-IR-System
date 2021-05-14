@@ -27,3 +27,38 @@ vector<int> listIntersection(const vector<int> &A, const vector<int> &B) {
 	ld ratio = (b.size() + 0.0) / (a.size() + 0.0);
 	return ratio > 9.0 ? listIntersectionBS(a, b) : listIntersection2P(a, b);
 }
+
+vector<int> listUnion(const vector<int>& A, const vector<int>& B) {
+	vector<int> res; int n = (int)A.size(), m = (int)B.size();
+	int i = 0, j = 0; while (i != n && j != m) {
+		if (A[i] < B[j]) { res.push_back(A[i++]); continue; }
+		if (A[i] > B[j]) { res.push_back(B[j++]); continue; }
+		res.push_back(A[i]); i++; j++;
+	} return move(res);
+}
+
+vector<int> ANDQuery(string& query, map<string, vector<int>>& index) {
+	stringstream ss(query); string word; ss >> word;
+	vector<int> res = index[word]; while (ss >> word) {
+		res = listIntersection(res, index[word]);
+	} return move(res);
+}
+
+vector<int> listsUnion(int L, int R, map<string, vector<int>>& index) {
+	vector<pair<int, int>> pq; vector<int> res;
+	for (int i = L; i <= R; i++) pq.push_back({ i, 0 });
+	auto comp = [&](const pair<int, int>& a, const pair<int, int>& b) {
+		return index[to_string(a.first)][a.second] > index[to_string(b.first)][b.second];
+	}; make_heap(pq.begin(), pq.end(), comp);
+
+	while (!pq.empty()) {
+		pair<int, int> cur = pq.front(); 
+		pop_heap(pq.begin(), pq.end()); pq.pop_back();
+		string id = to_string(cur.first); int i = cur.second;
+		if (i + 1 != (int)index[id].size()) {
+			pq.emplace_back(id, i + 1);
+			push_heap(pq.begin(), pq.end(), comp);
+		} if (res.empty() || index[id][i] != res.back())
+			res.push_back(index[id][i]);
+	} return move(res);
+}

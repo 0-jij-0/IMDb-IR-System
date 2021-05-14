@@ -18,5 +18,8 @@
     <ClInclude Include="Indexing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BooleanModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
