@@ -7,6 +7,13 @@
 *.suo
 *.sqlite
 *.sqlite-journal
+*.tlog
+*.idb
+*.pdb
+*.ilk
+*.recipe
+*.vcxproj
+*.filters
 
 # Prerequisites
 *.d
