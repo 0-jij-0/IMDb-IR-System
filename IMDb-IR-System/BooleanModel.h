@@ -56,7 +56,7 @@ vector<int> listsUnion(int L, int R, map<string, vector<int>>& index) {
 		pop_heap(pq.begin(), pq.end()); pq.pop_back();
 		string id = to_string(cur.first); int i = cur.second;
 		if (i + 1 != (int)index[id].size()) {
-			pq.emplace_back(id, i + 1);
+			pq.emplace_back(cur.first, i + 1);
 			push_heap(pq.begin(), pq.end(), comp);
 		} if (res.empty() || index[id][i] != res.back())
 			res.push_back(index[id][i]);

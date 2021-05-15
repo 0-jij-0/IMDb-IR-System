@@ -59,5 +59,6 @@ void initializeSearchEngine() {
 	getTFIDFIndex(); time_t finish = clock();
 
 	ld elapsed = 1000.0 * (finish - start) / CLOCKS_PER_SEC;
-	cout << "Initializing the Search Engine took " << elapsed << "s" << '\n';
+	cout << fixed << setprecision(3);
+	cout << "Initializing the Search Engine took " << elapsed / 1000.0 << "s" << '\n';
 }
