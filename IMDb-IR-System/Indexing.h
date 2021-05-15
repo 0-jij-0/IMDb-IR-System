@@ -49,16 +49,12 @@ void getTFIDFIndex() {
 	} ifs.close();
 }
 
-void initializeSearchEngine() {
-	time_t start = clock(); getMoviesName();
+void initializeIndices() {
+	getMoviesName();
 	getBooleanInvertedIndex("NameIndex.txt", nameIndex);
 	getBooleanInvertedIndex("ActorIndex.txt", actorIndex);
 	getBooleanInvertedIndex("CharacterIndex.txt", characterIndex);
 	getBooleanInvertedIndex("YearIndex.txt", yearIndex);
 	getBooleanInvertedIndex("RatingIndex.txt", ratingIndex);
-	getTFIDFIndex(); time_t finish = clock();
-
-	ld elapsed = 1000.0 * (finish - start) / CLOCKS_PER_SEC;
-	cout << fixed << setprecision(3);
-	cout << "Initializing the Search Engine took " << elapsed / 1000.0 << "s" << '\n';
+	getTFIDFIndex();
 }

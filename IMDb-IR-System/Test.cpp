@@ -4,7 +4,7 @@
 #include "SpellingCorrection.h"
 
 int main() {
-	initializeSearchEngine();
+	initializeIndices();
 	initializeTries();
 	string q = "cram hemsworth";
 	vector<int> res = spellingCorrection(q, ACTOR_INDEX);
