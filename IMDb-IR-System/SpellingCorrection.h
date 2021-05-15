@@ -57,16 +57,11 @@ void findAlternatives(const string& original, string& cur, TrieNode* curNode, co
 	}
 
 	findAlternatives(original, cur, curNode, originalID, i, ed - 1); //Discard an operation
-	if (curNode->nextNode[characterMap[original[i]]] != nullptr) { //Don't perform operations on this character
-		cur.push_back(original[i]);
-		findAlternatives(original, cur, curNode->nextNode[characterMap[original[i]]], originalID, i + 1, ed);
-		cur.pop_back();
-	}
 	findAlternatives(original, cur, curNode, originalID, i + 1, ed - 1); //Delete current character
 	for(auto &c : characterMap) if (curNode->nextNode[c.second] != nullptr) {
-		cur.push_back(c.first);
+		cur.push_back(c.first); bool dif = c.first != original[i];
 		findAlternatives(original, cur, curNode->nextNode[c.second], originalID, i, ed - 1); //Insert Character
-		findAlternatives(original, cur, curNode->nextNode[c.second], originalID, i + 1, ed - 1); //Replace Character
+		findAlternatives(original, cur, curNode->nextNode[c.second], originalID, i + 1, ed - dif); //Replace Character
 		cur.pop_back();
 	}
 }
