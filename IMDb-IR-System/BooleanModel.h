@@ -28,18 +28,13 @@ vector<int> listIntersection(const vector<int> &A, const vector<int> &B) {
 	return ratio > 9.0 ? listIntersectionBS(a, b) : listIntersection2P(a, b);
 }
 
-vector<int> listUnion(const vector<int>& A, const vector<int>& B) {
-	vector<int> res; int n = (int)A.size(), m = (int)B.size();
-	int i = 0, j = 0; while (i != n && j != m) {
-		if (A[i] < B[j]) { res.push_back(A[i++]); continue; }
-		if (A[i] > B[j]) { res.push_back(B[j++]); continue; }
-		res.push_back(A[i]); i++; j++;
-	} return move(res);
-}
+vector<int> ANDQuery(vector<string> &query, map<string, vector<int>>& index) {
+	auto comp = [&](const string& a, const string& b) {
+		return index[a].size() < index[b].size();
+	}; sort(query.begin(), query.end(), comp);
 
-vector<int> ANDQuery(string& query, map<string, vector<int>>& index) {
-	stringstream ss(query); string word; ss >> word;
-	vector<int> res = index[word]; while (ss >> word) {
+	vector<int> res = index[query[0]]; 
+	for(auto &word : query) if(word != query[0]) {
 		res = listIntersection(res, index[word]);
 	} return move(res);
 }
