@@ -46,7 +46,7 @@ vector<int> ANDQuery(string& query, map<string, vector<int>>& index) {
 
 vector<int> listsUnion(int L, int R, map<string, vector<int>>& index) {
 	vector<pair<int, int>> pq; vector<int> res;
-	for (int i = L; i <= R; i++) pq.push_back({ i, 0 });
+	for (int i = L; i <= R; i++) if(index.count(to_string(i))) pq.push_back({ i, 0 });
 	auto comp = [&](const pair<int, int>& a, const pair<int, int>& b) {
 		return index[to_string(a.first)][a.second] > index[to_string(b.first)][b.second];
 	}; make_heap(pq.begin(), pq.end(), comp);
