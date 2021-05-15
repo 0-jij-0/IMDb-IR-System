@@ -18,7 +18,7 @@ using namespace std;
 typedef long long ll;
 typedef double ld;
 
-vector<string> movieName;
+vector<string> showName, showRating;
 map<string, vector<int>> nameIndex;
 map<string, vector<int>> actorIndex;
 map<string, vector<int>> characterIndex;
@@ -26,18 +26,21 @@ map<string, map<int, ld>> quoteIndex;
 map<string, vector<int>> yearIndex;
 map<string, vector<int>> ratingIndex;
 
-void getMoviesName() {
-	ifstream ifs("MovieIDMap.txt"); while (!ifs.eof()) {
+void getShowsName() {
+	ifstream ifs("ShowIDMap.txt"); while (!ifs.eof()) {
 		string line; getline(ifs, line);
-		movieName.emplace_back(line);
+		showName.emplace_back(line);
 	} ifs.close();
 }
 
-void getBooleanInvertedIndex(string fileName, map<string, vector<int>> &index) {
+void getBooleanInvertedIndex(string fileName, map<string, vector<int>> &index, bool b = false) {
 	ifstream ifs(fileName.c_str()); while (!ifs.eof()) {
 		string line; getline(ifs, line); if (line.empty()) { continue; }
 		stringstream ss(line); string key; ss >> key;
-		int ID; while (ss >> ID) { index[key].push_back(ID); }
+		int ID; while (ss >> ID) { 
+			index[key].push_back(ID);
+			if (b) { showRating[ID] = key; }
+		}
 	} ifs.close();
 }
 
@@ -50,11 +53,11 @@ void getTFIDFIndex() {
 }
 
 void initializeIndices() {
-	getMoviesName();
+	getShowsName();
 	getBooleanInvertedIndex("NameIndex.txt", nameIndex);
 	getBooleanInvertedIndex("ActorIndex.txt", actorIndex);
 	getBooleanInvertedIndex("CharacterIndex.txt", characterIndex);
 	getBooleanInvertedIndex("YearIndex.txt", yearIndex);
-	getBooleanInvertedIndex("RatingIndex.txt", ratingIndex);
+	getBooleanInvertedIndex("RatingIndex.txt", ratingIndex, 1);
 	getTFIDFIndex();
 }

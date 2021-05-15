@@ -56,7 +56,12 @@ void executeQuery() {
 	if (emp) { cout << "Empty Query: Please provide info to search for." << endl << endl; return; }
 	if (res.empty()) { cout << "No Results were found." << endl << endl; return; }
 
+	auto comp = [&](const int& a, const int& b) {
+		return showRating[a] < showRating[b];
+	}; sort(res.rbegin(), res.rend(), comp);
 
+	for (int i = 0; i < min(10, (int)res.size()); i++)
+		cout << showName[res[i]] << endl; cout << endl;
 }
 
 int main() {
