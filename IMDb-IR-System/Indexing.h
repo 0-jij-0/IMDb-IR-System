@@ -28,7 +28,7 @@ map<string, vector<int>> yearIndex;
 map<string, vector<int>> ratingIndex;
 
 void getShowsName() {
-	ifstream ifs("ShowNameMap.txt"); while (!ifs.eof()) {
+	ifstream ifs("Index\\ShowNames.txt"); while (!ifs.eof()) {
 		string line; getline(ifs, line);
 		showName.emplace_back(line);
 	} ifs.close();
@@ -49,12 +49,12 @@ void getShowsInfo(map<string, vector<int>> &index, vector<int>& info) {
 
 void initializeIndices() {
 	getShowsName();
-	getBooleanInvertedIndex("NameIndex.txt", nameIndex);
-	getBooleanInvertedIndex("ActorIndex.txt", actorIndex);
-	getBooleanInvertedIndex("CharacterIndex.txt", characterIndex);
-	getBooleanInvertedIndex("YearIndex.txt", yearIndex);
-	getBooleanInvertedIndex("RatingIndex.txt", ratingIndex);
-	getBooleanInvertedIndex("QuoteIndex.txt", quoteIndex);
+	getBooleanInvertedIndex("Index\\NameIndex.txt", nameIndex);
+	getBooleanInvertedIndex("Index\\ActorIndex.txt", actorIndex);
+	getBooleanInvertedIndex("Index\\CharacterIndex.txt", characterIndex);
+	getBooleanInvertedIndex("Index\\YearIndex.txt", yearIndex);
+	getBooleanInvertedIndex("Index\\RatingIndex.txt", ratingIndex);
+	getBooleanInvertedIndex("Index\\QuoteIndex.txt", quoteIndex);
 	getShowsInfo(yearIndex, showYear); 
 	getShowsInfo(ratingIndex, showRating);
 }

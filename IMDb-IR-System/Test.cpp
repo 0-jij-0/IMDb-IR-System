@@ -61,7 +61,8 @@ void executeQuery() {
 	}; sort(res.rbegin(), res.rend(), comp);
 
 	for (int i = 0; i < min(10, (int)res.size()); i++)
-		cout << showName[res[i]] << endl; cout << endl;
+		cout << showName[res[i]] << " (" << showYear[res[i]] << ") (" << showRating[res[i]] << ")" << endl; 
+	cout << endl;
 }
 
 int main() {
