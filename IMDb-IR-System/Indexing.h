@@ -18,38 +18,33 @@ using namespace std;
 typedef long long ll;
 typedef double ld;
 
-vector<string> showName, showRating;
+vector<string> showName;
+vector<int> showRating, showYear;
 map<string, vector<int>> nameIndex;
 map<string, vector<int>> actorIndex;
 map<string, vector<int>> characterIndex;
-map<string, map<int, ld>> quoteIndex;
+map<string, vector<int>> quoteIndex;
 map<string, vector<int>> yearIndex;
 map<string, vector<int>> ratingIndex;
 
 void getShowsName() {
-	ifstream ifs("ShowIDMap.txt"); while (!ifs.eof()) {
+	ifstream ifs("ShowNameMap.txt"); while (!ifs.eof()) {
 		string line; getline(ifs, line);
 		showName.emplace_back(line);
 	} ifs.close();
 }
 
-void getBooleanInvertedIndex(string fileName, map<string, vector<int>> &index, bool b = false) {
+void getBooleanInvertedIndex(string fileName, map<string, vector<int>> &index) {
 	ifstream ifs(fileName.c_str()); while (!ifs.eof()) {
 		string line; getline(ifs, line); if (line.empty()) { continue; }
 		stringstream ss(line); string key; ss >> key;
-		int ID; while (ss >> ID) { 
-			index[key].push_back(ID);
-			if (b) { showRating[ID] = key; }
-		}
+		int ID; while (ss >> ID) { index[key].push_back(ID); }
 	} ifs.close();
 }
 
-void getTFIDFIndex() {
-	ifstream ifs("QuoteIndex.txt"); while (!ifs.eof()) {
-		string line; getline(ifs, line); if (line.empty()) { continue; }
-		stringstream ss(line); string key; ss >> key;
-		int ID; ld tfidf; while (ss >> ID) { ss >> tfidf; quoteIndex[key][ID] = tfidf; }
-	} ifs.close();
+void getShowsInfo(map<string, vector<int>> &index, vector<int>& info) {
+	info.resize(showName.size()); for (auto& x : index) 
+		for(auto &y : x.second) info[y] = stoi(x.first);
 }
 
 void initializeIndices() {
@@ -58,6 +53,8 @@ void initializeIndices() {
 	getBooleanInvertedIndex("ActorIndex.txt", actorIndex);
 	getBooleanInvertedIndex("CharacterIndex.txt", characterIndex);
 	getBooleanInvertedIndex("YearIndex.txt", yearIndex);
-	getBooleanInvertedIndex("RatingIndex.txt", ratingIndex, 1);
-	getTFIDFIndex();
+	getBooleanInvertedIndex("RatingIndex.txt", ratingIndex);
+	getBooleanInvertedIndex("QuoteIndex.txt", quoteIndex);
+	getShowsInfo(yearIndex, showYear); 
+	getShowsInfo(ratingIndex, showRating);
 }

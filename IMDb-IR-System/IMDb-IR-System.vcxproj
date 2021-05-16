@@ -145,6 +145,7 @@
     <ClInclude Include="Indexing.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Queries.h" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
