@@ -54,6 +54,7 @@
 *.log
 *.gz
 *.toc
+.vs/
 Makefile
 
 
