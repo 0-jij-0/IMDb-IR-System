@@ -45,7 +45,7 @@ std::vector<int> ListIntersection(const std::vector<int> &A,
 
 std::vector<int> GetInRange(int L, int R, const std::vector<int> &index) {
   std::vector<int> res;
-  for (int i = 0; i < (int)index.size(); i++)
+  for (size_t i = 0; i < index.size(); i++)
     if (index[i] >= L && index[i] <= R)
       res.push_back(i);
   return res;

@@ -10,13 +10,13 @@
 // whitespace characters.
 class SpellingCorrector {
   // Supported characters: [a-z], [0-9], '
-  static const int alphabet_size = 37;
+  static const size_t alphabet_size = 37;
 
   // The user is allowed a maximum of two mistakes per word.
   static const int edit_distance_threshold = 2;
 
   // We suggest a maximum of five possible corrections in case of mistake.
-  static const int max_num_query_alternatives = 5;
+  static const size_t max_num_query_alternatives = 5;
 
   // Contains the supported characters with their assigned id's
   static std::map<char, int> character_map_;

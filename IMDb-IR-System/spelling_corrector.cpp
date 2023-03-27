@@ -2,9 +2,10 @@
 
 #include <iostream>
 #include <sstream>
+#include <stdint.h>
 #include <vector>
 
-SpellingCorrector::TrieNode::TrieNode() : next_node(alphabet_size, -1) {}
+SpellingCorrector::TrieNode::TrieNode() : next_node(alphabet_size, SIZE_MAX) {}
 
 SpellingCorrector::QueryAlternative::QueryAlternative(
     const std::string &word, const std::vector<int> &matches)
@@ -70,7 +71,7 @@ void SpellingCorrector::TrieInsert(const std::string &word) {
   size_t cur_node = 0;
   for (char c : word) {
     int nxt = character_map_[c];
-    if (trie_[cur_node].next_node[nxt] == -1) {
+    if (trie_[cur_node].next_node[nxt] == SIZE_MAX) {
       trie_[cur_node].next_node[nxt] = trie_.size();
       trie_.emplace_back();
     }
@@ -84,12 +85,15 @@ void SpellingCorrector::GetWordAlternatives(
     int node, std::set<std::string> &alternatives) {
   if (threshold == 0) { // No more operations allowed.
     // Just advance until reaching the end of the word.
-    for (; i < input.size() && node != -1; ++i) {
+    size_t original_size = word.size();
+    for (; i < input.size() && node != SIZE_MAX; ++i) {
       node = trie_[node].next_node[character_map_[input[i]]];
+      word.push_back(input[i]);
     }
-    if (node != -1 && trie_[node].is_word) {
+    if (node != SIZE_MAX && trie_[node].is_word) {
       alternatives.insert(word);
     }
+    word.resize(original_size);
     return;
   }
 
@@ -116,7 +120,7 @@ void SpellingCorrector::GetWordAlternatives(
       }
       for (const auto &[character, idx] : character_map_) {
         if (size_t next_node = trie_[node].next_node[idx];
-            next_node != -1 &&
+            next_node != SIZE_MAX &&
             (operation_type == OperationType::kAdd || character != input[i])) {
           word.push_back(character);
           GetWordAlternatives(input, i + (operation_type == kReplace),
@@ -136,7 +140,7 @@ void SpellingCorrector::GetWordAlternatives(
   // Try using the available character if possible.
   if (i != input.size()) {
     if (size_t next_node = trie_[node].next_node[character_map_[input[i]]];
-        next_node != -1) {
+        next_node != SIZE_MAX) {
       word.push_back(input[i]);
       GetWordAlternatives(input, i + 1, threshold, word, next_node,
                           alternatives);
@@ -151,13 +155,15 @@ void SpellingCorrector::GetQueryAlternatives(
     const std::vector<int> &curList, const std::string &cur_query,
     const std::string &prev_word, const Index &index) {
   // The current generated sentence has no matches.
-  if (curList.size() < topK_alternatives.top().matches.size()) {
+  if (curList.empty() ||
+      (!topK_alternatives.empty() &&
+       curList.size() < topK_alternatives.top().matches.size())) {
     return;
   }
   if (i == alternatives.size()) {
     // Keep track of the top 5 alternative queries. Quality is measured by the
     // number of matches a query has.
-    if ((int)topK_alternatives.size() < max_num_query_alternatives) {
+    if (topK_alternatives.size() < max_num_query_alternatives) {
       topK_alternatives.emplace(cur_query, curList);
       return;
     }
@@ -194,7 +200,7 @@ SpellingCorrector::GetTopQueryAlternatives(const std::string &query,
   // Get the top K queries from combinations of the generated alternatives.
   std::priority_queue<QueryAlternative> topK_alternatives;
   for (auto &x : word_alternatives[0])
-    GetQueryAlternatives(word_alternatives, 0, topK_alternatives, *index.at(x),
+    GetQueryAlternatives(word_alternatives, 1, topK_alternatives, *index.at(x),
                          x + " ", x, index);
 
   // Get the final query_alternatives by order match count.
